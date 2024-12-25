@@ -13,9 +13,6 @@ COPY pyproject.toml .
 COPY *.py .
 COPY tests/ tests/
 
-# Install dependencies
-RUN pip install --no-cache-dir .
-
 # Create volume for persistent data
 VOLUME /app/data
 
