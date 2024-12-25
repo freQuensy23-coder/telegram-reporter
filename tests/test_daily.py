@@ -1,10 +1,10 @@
-from usecase import daily_report, get_users_without_report_yesterday
+from reporter.usecase import daily_report, get_users_without_report_yesterday
 import asyncio
 import pytest
 from datetime import datetime, timedelta
 from unittest.mock import MagicMock, patch
 
-from models import User
+from reporter.models import User
 
 
 @pytest.mark.asyncio
@@ -32,7 +32,7 @@ async def test_get_users_without_report_yesterday():
     test_chat_id = 100
 
     # Мокаем запрос к базе данных
-    with patch("usecase.User.select") as mock_select:
+    with patch("reporter.usecase.User.select") as mock_select:
         # Настраиваем мок для возврата пользователей без отчета вчера
         mock_select.return_value.where.return_value = [user3]
 
@@ -70,8 +70,8 @@ async def test_daily_report():
 
     # Мокаем запросы к базе данных
     with (
-        patch("usecase.User.select") as mock_select,
-        patch("usecase.get_users_without_report_yesterday") as mock_get_users,
+        patch("reporter.usecase.User.select") as mock_select,
+        patch("reporter.usecase.get_users_without_report_yesterday") as mock_get_users,
     ):
 
         # Настраиваем мок для возврата списка чатов
@@ -124,7 +124,7 @@ async def test_get_users_without_report_yesterday_all_reported():
     test_chat_id = 100
 
     # Мокаем запрос к базе данных
-    with patch("usecase.User.select") as mock_select:
+    with patch("reporter.usecase.User.select") as mock_select:
         # Возвращаем пустой список, т.к. все отправили отчет
         mock_select.return_value.where.return_value = []
 

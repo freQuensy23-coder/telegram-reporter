@@ -5,17 +5,12 @@ import aiogram
 import loguru
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message
-
-import usecase
-from models import User, db, create_tables
-import asyncio
-from datetime import datetime
-
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from loguru import logger
 
-import usecase
+from reporter.models import User, db, create_tables
+from reporter import usecase
 
 
 async def send_daily_reports():
@@ -75,4 +70,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(main()) 
