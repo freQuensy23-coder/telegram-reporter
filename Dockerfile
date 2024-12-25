@@ -10,6 +10,10 @@ RUN apt-get update && apt-get install -y \
 
 # Copy project files
 COPY pyproject.toml .
+
+RUN pip install uv
+RUN uv sync
+
 COPY *.py .
 COPY tests/ tests/
 
@@ -21,4 +25,4 @@ ENV TELEGRAM_BOT_TOKEN=""
 ENV PYTHONUNBUFFERED=1
 
 # Run the bot
-CMD ["python", "main.py"]
+CMD ["uv", "run", "main.py"]
