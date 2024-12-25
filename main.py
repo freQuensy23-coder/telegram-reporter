@@ -29,11 +29,9 @@ async def process_message(message: Message):
 
 
 async def main():
-    # Setup and start scheduler
     scheduler = setup_scheduler()
     scheduler.start()
 
-    # Start polling
     await dp.start_polling(bot)
 
 

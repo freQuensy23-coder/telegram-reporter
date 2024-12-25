@@ -27,14 +27,13 @@ def setup_scheduler():
     """Setup scheduler with daily report job"""
     scheduler = AsyncIOScheduler()
 
-    # Schedule job to run at 11:59 every day
     trigger = CronTrigger(hour=11, minute=59)
     scheduler.add_job(
         send_daily_reports,
         trigger=trigger,
         name="daily_report",
-        misfire_grace_time=60,  # Allow job to be late by up to 60 seconds
-        coalesce=True,  # Only run once if multiple executions are due
+        misfire_grace_time=60,
+        coalesce=True,
     )
 
     return scheduler
