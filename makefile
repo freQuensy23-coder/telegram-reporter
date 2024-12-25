@@ -5,7 +5,7 @@ lint:
 	mypy .
 
 test:
-	PYTHONPATH=. pytest -v tests/
+	PYTHONPATH=src pytest -v tests/
 
 run:
 	docker compose up --build

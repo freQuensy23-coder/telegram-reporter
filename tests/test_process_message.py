@@ -3,8 +3,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from models import User
-from usecase import process_message
+from reporter.models import User
+from reporter.usecase import process_message
 
 
 @pytest.mark.asyncio
@@ -16,8 +16,8 @@ async def test_process_message_new_user():
 
     # Мокаем запрос к базе данных
     with (
-        patch("usecase.User.get_or_none") as mock_get,
-        patch("usecase.User.create") as mock_create,
+        patch("reporter.usecase.User.get_or_none") as mock_get,
+        patch("reporter.usecase.User.create") as mock_create,
     ):
 
         # Пользователь не найден
@@ -33,7 +33,7 @@ async def test_process_message_new_user():
         # Проверяем что был вызван поиск пользователя
         mock_get.assert_called_once()
 
-        # Проверяем что был соз��ан новый пользователь с правильными параметрами
+        # Проверяем что был создан новый пользователь с правильными параметрами
         mock_create.assert_called_once()
         args = mock_create.call_args[1]
         assert args["telegram_id"] == test_user_id
@@ -55,7 +55,7 @@ async def test_process_message_existing_user():
     existing_user.last_report_date_time = old_time
 
     # Мокаем запрос к базе данных
-    with patch("usecase.User.get_or_none") as mock_get:
+    with patch("reporter.usecase.User.get_or_none") as mock_get:
         # Возвращаем существующего пользователя
         mock_get.return_value = existing_user
 

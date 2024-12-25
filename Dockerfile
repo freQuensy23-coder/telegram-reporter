@@ -14,8 +14,11 @@ COPY pyproject.toml .
 RUN pip install uv
 RUN uv sync
 
-COPY *.py .
+COPY src/ src/
 COPY tests/ tests/
+
+# Install our package in development mode
+RUN pip install -e .
 
 # Create volume for persistent data
 VOLUME /app/data
@@ -25,4 +28,4 @@ ENV TELEGRAM_BOT_TOKEN=""
 ENV PYTHONUNBUFFERED=1
 
 # Run the bot
-CMD ["uv", "run", "main.py"]
+CMD ["python", "-m", "reporter.main"]
