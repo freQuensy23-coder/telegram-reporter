@@ -7,7 +7,7 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message
 
 import usecase
-from models import User, db
+from models import User, db, create_tables
 import asyncio
 from datetime import datetime
 
@@ -67,6 +67,7 @@ async def process_message(message: Message):
 
 
 async def main():
+    create_tables()
     scheduler = setup_scheduler()
     scheduler.start()
 
