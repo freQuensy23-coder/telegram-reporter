@@ -6,7 +6,6 @@ from models import User
 
 
 async def process_message(user_id: int, username: str, message: str, chat_id: int):
-    # get user
     user = User.get_or_none(User.telegram_id == user_id, User.chat_id == chat_id)
     if not user:
         user = User.create(
@@ -15,7 +14,6 @@ async def process_message(user_id: int, username: str, message: str, chat_id: in
             chat_id=chat_id,
             last_report_date_time=datetime.now(),
         )
-    user.last_report_date_time = datetime.now()
     user.save()
 
 
