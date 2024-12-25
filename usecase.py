@@ -14,6 +14,7 @@ async def process_message(user_id: int, username: str, message: str, chat_id: in
             chat_id=chat_id,
             last_report_date_time=datetime.now(),
         )
+    user.last_report_date_time = datetime.now()
     user.save()
 
 
