@@ -1,7 +1,7 @@
 from peewee import (
     CharField,
     DateTimeField,
-    IntegerField,  # type: ignore
+    IntegerField,
     Model,
     SqliteDatabase,
 )
@@ -22,4 +22,4 @@ class User(Model):
 
 def create_tables():
     with db:
-        db.create_tables([User])
+        db.create_tables([User]) 
