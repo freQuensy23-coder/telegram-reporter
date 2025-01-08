@@ -18,7 +18,7 @@ async def process_message(user_id: int, username: str, message: str, chat_id: in
 
 async def daily_report() -> dict[int, str]:
     msgs_to_send = {}
-    chat_ids: list[int] = User.select(User.chat_id).distinct()
+    chat_ids: list[int] = [chat.chat_id for chat in User.select(User.chat_id).distinct().tuples()]
     for chat_id in chat_ids:
         loguru.logger.debug(f"Processing chat {chat_id}")
         users_without_report_yesterday = await get_users_without_report_yesterday(
@@ -44,8 +44,7 @@ async def get_users_without_report_yesterday(chat_id: int) -> list[User]:
     )
     result: list[User] = User.select(User.telegram_id, User.username).where(
         User.chat_id == chat_id,
-        User.last_report_date_time.to_timestamp() < yesterday.timestamp(),
+        User.last_report_date_time < yesterday,
     )
+    loguru.logger.debug(f"Users without report yesterday: {result}")
     return result
-
-# ... остальной код без изменений ... 
