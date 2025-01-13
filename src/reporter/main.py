@@ -5,13 +5,11 @@ import aiogram
 import loguru
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.triggers.cron import CronTrigger
 from loguru import logger
 
 from reporter.models import User, db, create_tables
 from reporter import usecase
-
+from datetime import datetime, timedelta
 
 async def send_daily_reports():
     """Send daily reports to all chats"""
@@ -27,20 +25,14 @@ async def send_daily_reports():
         logger.error(f"Error in send_daily_reports: {e}")
 
 
-def setup_scheduler():
-    """Setup scheduler with daily report job"""
-    scheduler = AsyncIOScheduler()
-
-    trigger = CronTrigger(hour=11, minute=59)
-    scheduler.add_job(
-        send_daily_reports,
-        trigger=trigger,
-        name="daily_report",
-        misfire_grace_time=60,
-        coalesce=True,
-    )
-
-    return scheduler
+async def schedule_daily_report():
+    last_report_date_time = datetime.fromtimestamp(1)
+    while True:
+        if last_report_date_time < datetime.now() - timedelta(days=1):
+            await send_daily_reports()
+            last_report_date_time = datetime.now()
+        await asyncio.sleep(60)
+    
 
 
 dp = Dispatcher()
@@ -63,9 +55,7 @@ async def process_message(message: Message):
 
 async def main():
     create_tables()
-    scheduler = setup_scheduler()
-    scheduler.start()
-
+    asyncio.create_task(schedule_daily_report())
     await dp.start_polling(bot)
 
 
