@@ -54,8 +54,11 @@ async def process_message(message: Message):
 
 
 async def main():
+    loguru.logger.info("Creating tables")
     create_tables()
+    loguru.logger.info("Scheduling daily report")
     asyncio.create_task(schedule_daily_report())
+    loguru.logger.info("Starting polling")
     await dp.start_polling(bot)
 
 
